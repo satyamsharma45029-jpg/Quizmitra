@@ -305,7 +305,33 @@ body.dark .question-number {
 body.dark .hero {
   background: linear-gradient(135deg, #312e81, #581c87);
 }
+.difficulty-box {
+  margin: 25px 15px;
+  text-align: center;
+}
 
+.difficulty-box h2 {
+  margin-bottom: 15px;
+}
+
+.difficulty-box button {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin: 10px auto;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #7c3aed;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.difficulty-box button:hover {
+  background: #6d28d9;
+}
 body.dark footer {
   color: #94a3b8;
 }
@@ -347,7 +373,21 @@ body.dark footer {
     ⚽ Sports
   </button>
 </div>
+<div class="difficulty-box">
+  <h2>Choose Difficulty</h2>
 
+  <button onclick="setDifficulty('easy')">
+    🟢 Easy
+  </button>
+
+  <button onclick="setDifficulty('medium')">
+    🟡 Medium
+  </button>
+
+  <button onclick="setDifficulty('hard')">
+    🔴 Hard
+  </button>
+</div>
 <div class="quiz-box">
 
   <div id="quiz-container">
@@ -527,6 +567,7 @@ const categoryQuestions = {
 };
 
 let selectedCategory = "gk";
+let selectedDifficulty = "easy";
 let questions = categoryQuestions.gk;
 let currentQuestion = 0;
 let score = 0;
@@ -561,7 +602,13 @@ if (localStorage.getItem("quizmitra-theme") === "dark") {
 function startTimer() {
   clearInterval(timerInterval);
 
+  if (selectedDifficulty === "easy") {
+  timeLeft = 20;
+} else if (selectedDifficulty === "medium") {
   timeLeft = 15;
+} else {
+  timeLeft = 10;
+  }
   document.getElementById("timer").textContent = timeLeft;
 
   timerInterval = setInterval(function() {
@@ -746,7 +793,19 @@ function goHome() {
     behavior: "smooth"
   });
 }
+function setDifficulty(level) {
+  selectedDifficulty = level;
 
+  if (level === "easy") {
+    timeLeft = 20;
+  } else if (level === "medium") {
+    timeLeft = 15;
+  } else {
+    timeLeft = 10;
+  }
+
+  alert("Difficulty selected: " + level.toUpperCase());
+}
 function startCategory(category) {
   clearInterval(timerInterval);
 
