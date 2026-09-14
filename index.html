@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuizMitra - GK Quiz</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.timer {
+  background: #fff7ed;
+  color: #ea580c;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7ff;
+  color: #172554;
+}
+
+header {
+  background: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px #ddd;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.badge {
+  background: #eef2ff;
+  color: #4f46e5;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  padding: 35px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.hero p {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.hero p {
+  opacity: 0.9;
+}
+
+.quiz-box {
+  max-width: 600px;
+  margin: 25px auto;
+  padding: 20px;
+}
+
+.progress {
+  height: 8px;
+  background: #ddd;
+  border-radius: 10px;
+  margin: 15px 0 25px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 10%;
+  background: #4f46e5;
+  transition: width 0.3s;
+}
+
+.question-card {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px #e1e1e1;
+}
+
+.question-number {
+  color: #4f46e5;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.question {
+  font-size: 21px;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+.options {
+  display: grid;
+  gap: 12px;
+}
+
+.option {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 12px;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  color: #172554;
+}
+.option.correct {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #22c55e;
+}
+
+.option.wrong {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #ef4444;
+}
+.option:hover {
+  border-color: #4f46e5;
+  background: #f5f3ff;
+}
+
+.option.selected {
+  border-color: #4f46e5;
+  background: #eef2ff;
+}
+
+.option.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.option.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.next-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 16px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.next-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.result {
+  text-align: center;
+  background: white;
+  padding: 35px 20px;
+  border-radius: 18px;
+  box-shadow: 0 5px 20px #e1e1e1;
+}
+
+.result h2 {
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+.score {
+  font-size: 50px;
+  color: #4f46e5;
+  font-weight: bold;
+  margin: 20px;
+}
+
+.restart {
+  padding: 14px 25px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+/* Dark Mode */
+
+body.dark {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+body.dark header {
+  background: #1e293b;
+  box-shadow: none;
+}
+
+body.dark .question-card {
+  background: #1e293b;
+  box-shadow: none;
+}
+
+body.dark .option {
+  background: #334155;
+  color: white;
+  border-color: #475569;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 30px;
+  color: #64748b;
+  font-size: 14px;
+}
+.home-btn {
+  background: #64748b;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+body.dark .home-btn {
+  background: #334155;
+  color: white;
+}
+
+body.dark .home-btn:hover {
+  background: #475569;
+}
+.home-btn:hover {
+  background: #475569;
+}
+body.dark footer {
+  color: #94a3b8;
+}
+body.dark .option:hover {
+  background: #475569;
+}
+body.dark #question-number {
+  background: #1e3a8a;
+  color: #bfdbfe;
+}
+body.dark .hero {
+  background: linear-gradient(135deg, #312e81, #581c87);
+}
+.card {
+  background: white;
+  padding: 25px 15px;
+  border-radius: 18px;
+  box-shadow: 0 5px 15px #e2e2e2;
+  transition: 0.3s;
+  cursor: pointer;
+}
+body.dark .card {
+  background: #1e293b;
+  color: white;
+  box-shadow: none;
+}
+.feedback {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+#correct-count {
+  color: #16a34a;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.restart {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.progress-container {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+#question-number {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  border-radius: 10px;
+  transition: width 0.3s;
+}
+.restart:hover {
+  transform: scale(1.05);
+}
+#wrong-count {
+  color: #dc2626;
+  font-weight: bold;
+  margin-top: 5px;
+}
+.feedback.correct {
+  background: #dcfce7;
+  color: #166534;
+}
+#percentage {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2563eb;
+  margin-top: 10px;
+  }
+.feedback.wrong {
+  background: #fee2e2;
+  color: #991b1b;
+  }
+body.dark .card p {
+  color: #cbd5e1;
+  }
+.card:hover {
+  transform: translateY(-5px);
+  }
+body.dark footer {
+  color: #94a3b8;
+  }
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #64748b;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">QuizMitra</div>
+
+  <div>
+    <button class="badge" onclick="toggleDarkMode()">
+      🌙 Dark Mode
+    </button>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Welcome to QuizMitra 🧠</h1>
+
+  <p>
+    Learn • Play • Compete
+  </p>
+
+  <p>
+    Challenge yourself with fun quizzes!
+  </p>
+</div>
+
+<div class="quiz-box">
+
+  <div id="quiz-container">
+
+    <div>
+      <b id="progress-text">Question 1 of 10</b>
+      <div class="progress">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+
+    <div class="question-card">
+<div class="timer">
+  ⏱️ Time Left: <span id="timer">15</span>s
+</div>
+      <div class="question-number" id="question-number">
+        Question 1
+      </div>
+<div class="progress-container">
+  <div class="progress-bar" id="progress-bar"></div>
+</div>
+      <div class="question" id="question">
+        Loading question...
+      </div>
+
+      <div class="options" id="options"></div>
+<div id="feedback"></div>
+      <button class="next-btn" id="next-btn" disabled>
+        Next Question →
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="result hidden" id="result">
+
+    <h2>🎉 Quiz Completed!</h2>
+
+    <p>Your Score</p>
+
+    <div class="score" id="score">0 / 10</div>
+<p id="percentage"></p>
+    <p id="message"></p>
+<p id="correct-count"></p>
+<p id="wrong-count"></p>
+    <br>
+
+<button class="restart" onclick="restartQuiz()">
+  🔄 Play Again
+</button>
+  </div>
+<button class="home-btn" onclick="goHome()">
+  🏠 Home
+</button>
+</div>
+
+<footer>
+  <p>© 2026 QuizMitra | Learn • Play • Compete 🧠</p>
+</footer>
+
+<script>
+
+const questions = [
+
+  {
+    question: "भारत की राजधानी क्या है?",
+    options: ["मुंबई", "नई दिल्ली", "कोलकाता", "चेन्नई"],
+    answer: 1
+  },
+
+  {
+    question: "भारत का राष्ट्रीय पशु कौन-सा है?",
+    options: ["शेर", "हाथी", "बाघ", "हिरण"],
+    answer: 2
+  },
+
+  {
+    question: "विश्व का सबसे बड़ा महासागर कौन-सा है?",
+    options: ["हिंद महासागर", "अटलांटिक महासागर", "प्रशांत महासागर", "आर्कटिक महासागर"],
+    answer: 2
+  },
+
+  {
+    question: "भारत का राष्ट्रीय फूल कौन-सा है?",
+    options: ["गुलाब", "कमल", "सूरजमुखी", "चमेली"],
+    answer: 1
+  },
+
+  {
+    question: "सूर्य के सबसे निकट कौन-सा ग्रह है?",
+    options: ["पृथ्वी", "शुक्र", "बुध", "मंगल"],
+    answer: 2
+  },
+
+  {
+    question: "भारत का राष्ट्रीय खेल आधिकारिक रूप से क्या है?",
+    options: ["हॉकी", "क्रिकेट", "कबड्डी", "कोई आधिकारिक राष्ट्रीय खेल नहीं"],
+    answer: 3
+  },
+
+  {
+    question: "पानी का रासायनिक सूत्र क्या है?",
+    options: ["CO2", "H2O", "O2", "NaCl"],
+    answer: 1
+  },
+
+  {
+    question: "भारत का स्वतंत्रता दिवस कब मनाया जाता है?",
+    options: ["26 जनवरी", "15 अगस्त", "2 अक्टूबर", "14 नवंबर"],
+    answer: 1
+  },
+
+  {
+    question: "कंप्यूटर का मस्तिष्क किसे कहा जाता है?",
+    options: ["Monitor", "Keyboard", "CPU", "Mouse"],
+    answer: 2
+  },
+
+  {
+    question: "पृथ्वी का एकमात्र प्राकृतिक उपग्रह कौन-सा है?",
+    options: ["सूर्य", "चंद्रमा", "मंगल", "शुक्र"],
+    answer: 1
+  }
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let selected = false;
+let timeLeft = 15;
+let timerInterval;
+function toggleDarkMode() {
+
+  document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+
+    localStorage.setItem("quizmitra-theme", "dark");
+
+  } else {
+
+    localStorage.setItem("quizmitra-theme", "light");
+
+  }
+
+}
+function startTimer() {
+
+  clearInterval(timerInterval);
+
+  timeLeft = 15;
+
+  document.getElementById("timer").textContent = timeLeft;
+
+  timerInterval = setInterval(() => {
+
+    timeLeft--;
+
+    document.getElementById("timer").textContent = timeLeft;
+
+    if (timeLeft <= 0) {
+
+      clearInterval(timerInterval);
+
+      if (!selected) {
+
+        selected = true;
+        nextBtn.disabled = false;
+
+        document.querySelectorAll(".option")
+          .forEach(btn => btn.disabled = true);
+
+      }
+
+    }
+
+  }, 1000);
+
+  }
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("next-btn");
+const progressText = document.getElementById("progress-text");
+const progressBar = document.getElementById("progress-bar");
+const questionNumber = document.getElementById("question-number");
+const quizContainer = document.getElementById("quiz-container");
+const result = document.getElementById("result");
+
+function loadQuestion() {
+
+  selected = false;
+
+  nextBtn.disabled = true;
+
+  const q = questions[currentQuestion];
+
+  questionEl.textContent = q.question;
+
+  questionNumber.textContent =
+    "Question " + (currentQuestion + 1);
+
+  progressText.textContent =
+    "Question " + (currentQuestion + 1) +
+    " of " + questions.length;
+
+  progressBar.style.width =
+    ((currentQuestion + 1) / questions.length * 100) + "%";
+
+  optionsEl.innerHTML = "";
+startTimer();
+  q.options.forEach((option, index) => {
+
+    const button = document.createElement("button");
+
+    button.className = "option";
+
+    button.textContent =
+      String.fromCharCode(65 + index) + ". " + option;
+
+    button.onclick = () => selectAnswer(index, button);
+
+    optionsEl.appendChild(button);
+
+  });
+
+}
+
+function selectAnswer(index, button) {
+
+  if (selected) return;
+
+  selected = true;
+
+  const correctAnswer = questions[currentQuestion].answer;
+
+  const allOptions =
+    document.querySelectorAll(".option");
+
+  allOptions.forEach((btn, i) => {
+
+    btn.disabled = true;
+
+    if (i === correctAnswer) {
+      btn.classList.add("correct");
+    }
+
+  });
+
+  if (index === correctAnswer) {
+
+  score++;
+button.classList.add("correct");
+  document.getElementById("feedback").textContent =
+    "✅ Correct Answer!";
+
+  document.getElementById("feedback").className =
+    "feedback correct";
+
+} else {
+
+  button.classList.add("wrong");
+
+  document.getElementById("feedback").textContent =
+    "❌ Wrong Answer!";
+
+  document.getElementById("feedback").className =
+    "feedback wrong";
+
+  }
+
+  nextBtn.disabled = false;
+
+}
+
+nextBtn.onclick = () => {
+clearInterval(timerInterval);
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+
+    loadQuestion();
+
+  } else {
+
+    showResult();
+
+  }
+
+};
+
+function showResult() {
+
+  quizContainer.classList.add("hidden");
+
+  result.classList.remove("hidden");
+
+  document.getElementById("score").textContent =
+    score + " / " + questions.length;
+let percentage = Math.round((score / questions.length) * 100);
+
+document.getElementById("percentage").textContent =
+  "Percentage: " + percentage + "%";
+  let message = "";
+document.getElementById("correct-count").textContent =
+  "Correct Answers: " + score;
+
+document.getElementById("wrong-count").textContent =
+  "Wrong Answers: " + (questions.length - score);
+  if (score >= 8) {
+
+    message = "🏆 Excellent! You are a Quiz Champion!";
+
+  } else if (score >= 5) {
+
+    message = "👏 Good job! Keep learning!";
+
+  } else {
+
+    message = "💪 Keep practicing! You can do better!";
+
+  }
+
+  document.getElementById("message").textContent = message;
+
+}
+
+function goHome() {
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz-container").classList.remove("hidden");
+
+  currentQuestion = 0;
+  score = 0;
+  selected = false;
+
+  loadQuestion();
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+  </html>
+
